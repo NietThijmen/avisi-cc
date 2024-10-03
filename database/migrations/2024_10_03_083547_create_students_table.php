@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('crebo_number', 16);
             $table->date('cohort');
             $table->date('date_of_birth');
+            $table->foreignIdFor(\App\Models\Teacher::class, 'career_coach_id');
             $table->timestamps();
         });
     }
