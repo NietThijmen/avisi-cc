@@ -3,10 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Student extends Model
 {
-    public function user()
+    protected $primaryKey = 'user_id';
+
+    protected $fillable = [
+        'class',
+        'crebo_number',
+        'cohort',
+        'date_of_birth'
+    ];
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
