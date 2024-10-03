@@ -15,10 +15,15 @@ class Student extends Model
     protected $fillable = [
         'student_number',
         'class',
-        'crebo_number',
+        'crebo_id',
         'cohort',
         'date_of_birth'
     ];
+
+    public function crebo(): BelongsTo
+    {
+        return $this->belongsTo(Crebo::class);
+    }
 
     public function user(): BelongsTo
     {

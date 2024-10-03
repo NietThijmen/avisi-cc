@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Crebo;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,10 +14,10 @@ return new class extends Migration {
             $table->foreignIdFor(User::class)->primary();
             $table->integer('student_number')->unique();
             $table->string('class', 32);
-            $table->string('crebo_number', 16);
+            $table->foreignIdFor(Crebo::class);
             $table->date('cohort');
             $table->date('date_of_birth');
-            $table->foreignIdFor(\App\Models\Teacher::class, 'career_coach_id')->nullable();
+            $table->foreignIdFor(Teacher::class, 'career_coach_id')->nullable();
             $table->timestamps();
         });
     }

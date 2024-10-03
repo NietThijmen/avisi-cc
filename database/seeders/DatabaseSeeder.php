@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\Role;
+use App\Models\Crebo;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -18,7 +19,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Teachers
+        Crebo::factory(20)->create();
+
+        // Teachers //
         User::factory(10)
             ->create()
             ->each(function ($user) {

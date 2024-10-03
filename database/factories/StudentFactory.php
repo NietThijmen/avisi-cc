@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Crebo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,7 @@ class StudentFactory extends Factory
         return [
             'student_number' => fake()->numberBetween(),
             'class' => fake()->numberBetween(1, 200),
-            'crebo_number' => fake()->numberBetween(0, 99999),
+            'crebo_id' => Crebo::all()->random()->id,
             'cohort' => fake()->date(),
             'date_of_birth' => fake()->date()
         ];
