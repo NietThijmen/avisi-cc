@@ -8,13 +8,13 @@ class Project extends Model
 {
     protected $fillable = [
         'name',
-        'po_id',
+        'assigned_id',
         'student_id',
     ];
 
-    public function po()
+    public function assigned()
     {
-        return $this->belongsTo(Teacher::class, 'po_id');
+        return $this->belongsTo(Teacher::class, 'assigned_id');
     }
 
     public function student()

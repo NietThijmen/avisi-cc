@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Role;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -11,15 +13,20 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const ROLES_WITH_DATA = [Role::Student, Role::Teacher];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'role',
     ];
 
     /**
@@ -40,23 +47,27 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'role' => Role::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function data()
+    protected function fullName(): Attribute
     {
-        $class = match ($this->role) {
-            'student' => Student::class,
-            'teacher' => Teacher::class,
-            default => null,
-        };
+        return Attribute::make(get: fn ($_, array $attributes) =>
+            \implode(" ", \array_filter(\Arr::only($attributes, ['first_name', 'middle_name', 'last_name'])),
+        ));
+    }
 
-        if($class === null) {
-            throw new \Exception("Invalid role");
-        }
+    public function data(): HasOne
+    {
+        if (! in_array($role = $this->role, User::ROLES_WITH_DATA))
+            throw new \Exception(sprintf(
+                "Role [%s] does not have special data that can be retrieved",
+                $role->name,
+            ));
 
-        return $this->hasOne($class, 'user_id');
+        return $this->hasOne($role->className(), 'user_id');
     }
 }
