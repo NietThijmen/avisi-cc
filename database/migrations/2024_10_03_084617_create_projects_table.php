@@ -10,8 +10,8 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('po_id');
-            $table->foreignId('student_id');
+            $table->foreignIdFor(\App\Models\Student::class);
+            $table->foreignIdFor(\App\Models\Teacher::class, 'assigned_id');
             $table->timestamps();
         });
     }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Role;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -17,9 +19,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'role',
     ];
 
     /**
@@ -40,23 +45,21 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'role' => Role::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public function data()
+    protected function fullName(): Attribute
     {
-        $class = match ($this->role) {
-            'student' => Student::class,
-            'teacher' => Teacher::class,
-            default => null,
-        };
+        return Attribute::make(get: fn ($_, array $attributes) =>
+            \implode(" ", \array_filter(\Arr::only($attributes, ['first_name', 'middle_name', 'last_name'])),
+        ));
+    }
 
-        if($class === null) {
-            throw new \Exception("Invalid role");
-        }
-
-        return $this->hasOne($class, 'user_id');
+    public function data(): HasOne
+    {
+        return $this->hasOne($this->role->className(), 'user_id');
     }
 }
