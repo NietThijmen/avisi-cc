@@ -10,6 +10,7 @@ return new class extends Migration {
     {
         Schema::create('students', function (Blueprint $table) {
             $table->foreignIdFor(User::class)->primary();
+            $table->integer('student_number')->unique();
             $table->string('class', 32);
             $table->string('crebo_number', 16);
             $table->date('cohort');

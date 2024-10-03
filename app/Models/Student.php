@@ -10,6 +10,7 @@ class Student extends Model
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
+        'student_number',
         'class',
         'crebo_number',
         'cohort',
