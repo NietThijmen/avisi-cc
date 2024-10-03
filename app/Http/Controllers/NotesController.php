@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StudentNoteAction;
 use App\Models\StudentNote;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,11 @@ class NotesController extends Controller
     {
         if (! $note->read) $note->setAttribute('read', true)->save();
 
+        $note->actions()->create([
+            'user_id' => \Auth::user()->id,
+            'action' => StudentNoteAction::Read
+        ]);
+
         return view('notes.show', compact('note'));
     }
 
@@ -23,7 +29,8 @@ class NotesController extends Controller
     {
         $validated = $request->validate(static::VALIDATION_RULES);
 
-        $request->user()->data()->notes()->attach($validated);
+        $note = $request->user()->data()->notes()->attach($validated);
+
 
         return redirect()->back()->with([
             'message' => __('Note created'),
@@ -35,6 +42,10 @@ class NotesController extends Controller
         $validated = $request->validate(static::VALIDATION_RULES);
 
         $note->update($validated);
+        $note->actions->create([
+            'user_id' => $request->user()->id,
+            'action' => StudentNoteAction::Update,
+        ]);
 
         return redirect()->back()->with([
             'message' => __('Note updated'),

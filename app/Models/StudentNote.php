@@ -27,4 +27,9 @@ class StudentNote extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+
+    public function actions(): HasMany
+    {
+        return $this->hasMany(StudentNoteActions::class);
+    }
 }
