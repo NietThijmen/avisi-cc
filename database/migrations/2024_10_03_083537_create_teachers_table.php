@@ -9,7 +9,9 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)->primary();
+            $table->foreignIdFor(User::class)
+                ->primary()
+                ->constrained();
             $table->timestamps();
         });
     }

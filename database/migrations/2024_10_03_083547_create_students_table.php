@@ -11,13 +11,17 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->foreignIdFor(User::class)->primary();
+            $table->foreignIdFor(User::class)
+                ->primary()
+                ->constrained();
             $table->integer('student_number')->unique();
             $table->string('class', 32);
-            $table->foreignIdFor(Crebo::class);
+            $table->foreignIdFor(Crebo::class)->constrained();
             $table->date('cohort');
             $table->date('date_of_birth');
-            $table->foreignIdFor(Teacher::class, 'career_coach_id')->nullable();
+            $table->foreignIdFor(Teacher::class, 'career_coach_id')
+                ->nullable()
+                ->constrained('teachers', 'user_id');
             $table->timestamps();
         });
     }
