@@ -44,4 +44,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function data()
+    {
+        $class = match ($this->role) {
+            'student' => Student::class,
+            'teacher' => Teacher::class,
+            default => null,
+        };
+
+        if($class === null) {
+            throw new \Exception("Invalid role");
+        }
+
+        return $this->hasOne($class, 'user_id');
+    }
 }
