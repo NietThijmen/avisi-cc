@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const ROLES_WITH_DATA = [Role::Student, Role::Teacher];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -60,6 +62,12 @@ class User extends Authenticatable
 
     public function data(): HasOne
     {
-        return $this->hasOne($this->role->className(), 'user_id');
+        if (! in_array($role = $this->role, User::ROLES_WITH_DATA))
+            throw new \Exception(sprintf(
+                "Role [%s] does not have special data that can be retrieved",
+                $role->name,
+            ));
+
+        return $this->hasOne($role->className(), 'user_id');
     }
 }

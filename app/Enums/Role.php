@@ -10,6 +10,7 @@ enum Role
 {
     case Student;
     case Teacher;
+    case Admin;
 
     public function newModel(): Model
     {
