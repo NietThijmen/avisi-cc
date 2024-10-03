@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\NotesController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
+
+Route::resource('notes', NotesController::class)
+    ->only(['show', 'store', 'update', 'destroy']);
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

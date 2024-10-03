@@ -10,6 +10,8 @@ class Crebo extends Model implements Stringable
 {
     use HasFactory;
 
+    protected $fillable = ['crebo'];
+
     public function __toString(): string
     {
         return sprintf("%05d", $this->crebo);

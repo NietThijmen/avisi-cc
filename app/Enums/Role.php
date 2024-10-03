@@ -12,9 +12,9 @@ enum Role
     case Teacher;
     case Admin;
 
-    public function newModel(): Model
+    public function newModel($attributes = []): Model
     {
-        return new ($this->className());
+        return new ($this->className())($attributes);
     }
 
     public function className(): string
