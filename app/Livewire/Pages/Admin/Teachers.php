@@ -23,7 +23,7 @@ class Teachers extends Component
     {
 //        $teacherCollection = Teacher::limit(25)->offset($this->page * 25)->get();
         $teacherCollection = User::where('role', '=', Role::Teacher->name)->withTrashed()->limit(25)->offset($this->page * 25)->get();
-
+        $teacherArray = [];
         foreach ($teacherCollection as $teacher) {
             $teacherArray[] = [
                 'id' => $teacher->id,
