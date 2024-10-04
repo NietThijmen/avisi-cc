@@ -27,7 +27,7 @@ class NotesOverview extends Component
     public function render()
     {
         return view('livewire.pages.notes.overview', [
-            'notes' => $this->getNotesBuilder()->paginate(),
+            'notes' => $this->getNotesBuilder()->with(['teacher', 'student'])->paginate(5),
         ]);
     }
 
