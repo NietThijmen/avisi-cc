@@ -7,16 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('crebos', function (Blueprint $table) {
+        Schema::create('education_rubrics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('crebo_number')->unique();
+            $table->foreignId('crebo_id')->constrained('crebos')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('crebos');
+        Schema::dropIfExists('education_rubrics');
     }
 };
