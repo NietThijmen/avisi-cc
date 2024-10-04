@@ -15,4 +15,9 @@ class EducationRubric extends Model
     {
         return $this->belongsTo(Crebo::class);
     }
+
+    public function users()
+    {
+        $this->hasMany(User::class, 'education_rubrics_users');
+    }
 }

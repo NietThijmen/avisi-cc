@@ -10,6 +10,10 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string ...$roles)
     {
+        if(config('app.debug')) {
+            return $next($request);
+        }
+
         $roles = $this->getRoles($roles);
 
         $user = $request->user('web');
