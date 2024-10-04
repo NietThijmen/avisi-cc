@@ -7,12 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Teacher extends Model
 {
-    protected $primaryKey = 'user_id';
-
-    protected $fillable = [
-        'user_id'
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class, 'id');
