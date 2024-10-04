@@ -13,7 +13,8 @@ class CreboFactory extends Factory
     public function definition(): array
     {
         return [
-            'crebo' => fake()->randomNumber(5),
+            'name' => fake()->userName(),
+            'crebo_number' => fake()->randomNumber(5),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
