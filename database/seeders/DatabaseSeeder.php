@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             ->create()
             ->each(function ($user) {
                 Teacher::create([
-                    'user_id' => $user->id
+                    'id' => $user->id
                 ]);
             });
 
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             ->create(['role' => Role::Student])
             ->each(function ($user) {
                 Student::factory()->create([
-                    'user_id' => $user->id
+                    'id' => $user->id
                 ]);
             });
 
