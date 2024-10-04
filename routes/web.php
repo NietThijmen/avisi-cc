@@ -1,18 +1,18 @@
 <?php
 
 use App\Http\Controllers\NotesController;
-use App\Livewire\NotesOverview;
+use App\Livewire\Notes\NotesOverview;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
 Route::get('/notes', NotesOverview::class)
-    ->middleware('role:student,admin')
+    ->middleware(['auth:web', 'role:student,teacher'])
     ->name('notes.index');
 
 Route::resource('notes', NotesController::class)
-    ->middleware(['auth:web'])
-    ->only(['show', 'store', 'update', 'destroy']);
+    ->only(['show', 'store', 'update', 'destroy'])
+    ->middleware(['auth:web']);
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
