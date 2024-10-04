@@ -21,7 +21,7 @@
 
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
+                    @include('livewire.profile.update-2fa')
                 </div>
             </div>
         </div>

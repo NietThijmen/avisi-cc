@@ -28,4 +28,12 @@ Route::middleware('auth')->group(function () {
 
     Volt::route('confirm-password', 'pages.auth.confirm-password')
         ->name('password.confirm');
+
+
+
+    Route::post('enable-two-factor', [\App\Http\Controllers\Auth\TwoFactorController::class, 'store'])
+        ->name('two-factor.enable');
+
+    Route::delete('disable-two-factor', [\App\Http\Controllers\Auth\TwoFactorController::class, 'delete'])
+        ->name('two-factor.disable');
 });

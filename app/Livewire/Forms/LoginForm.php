@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use PragmaRX\Google2FA\Google2FA;
 
 class LoginForm extends Form
 {
@@ -17,6 +18,9 @@ class LoginForm extends Form
 
     #[Validate('required|string')]
     public string $password = '';
+
+    #[Validate('nullable|string')]
+    public ?string $otp = null;
 
     #[Validate('boolean')]
     public bool $remember = false;
@@ -28,7 +32,25 @@ class LoginForm extends Form
      */
     public function authenticate(): void
     {
+        $google2fa = new Google2FA();
         $this->ensureIsNotRateLimited();
+
+        $user = Auth::getProvider()->retrieveByCredentials(['email' => $this->email]);
+        if($user->twofa_secret) {
+            if(!$this->otp) {
+                throw ValidationException::withMessages([
+                    'form.email' => trans('auth.failed'),
+                ]);
+            }
+
+            if(!$google2fa->verifyKey($user->twofa_secret, $this->otp)) {
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'form.email' => trans('auth.failed'),
+                ]);
+            }
+        }
+
 
         if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
             RateLimiter::hit($this->throttleKey());

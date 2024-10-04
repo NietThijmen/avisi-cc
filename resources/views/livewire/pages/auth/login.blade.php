@@ -9,6 +9,12 @@ new #[Layout('layouts.guest')] class extends Component
 {
     public LoginForm $form;
 
+    public function validEmail(): bool
+    {
+        $user = \App\Models\User::where('email', $this->form->email)->first();
+        return $user && $user->twofa_secret;
+    }
+
     /**
      * Handle an incoming authentication request.
      */
@@ -32,7 +38,7 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
+            <x-text-input wire:model.live="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
@@ -47,6 +53,17 @@ new #[Layout('layouts.guest')] class extends Component
 
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
+
+        @if($this->validEmail())
+            <div class="mt-4" >
+                <x-input-label for="twofactor" :value="__('2FA Code')" />
+                <x-text-input wire:model="form.otp" id="twofactor" class="block mt-1 w-full"
+                                type="text"
+                                name="twofactor"
+                                required autocomplete="off" />
+                <x-input-error :messages="$errors->get('form.twofactor')" class="mt-2" />
+            </div>
+        @endif
 
         <!-- Remember Me -->
         <div class="block mt-4">
