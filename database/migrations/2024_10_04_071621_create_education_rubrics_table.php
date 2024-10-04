@@ -14,6 +14,14 @@ return new class extends Migration {
                 ->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('criteria', function (Blueprint $table) {
+            $table->id();
+            $table->text('criteria');
+            $table->foreignIdFor(\App\Models\EducationRubric::class)->constrained()
+                ->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     public function down(): void

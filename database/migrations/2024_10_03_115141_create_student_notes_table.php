@@ -22,8 +22,8 @@ return new class extends Migration
         Schema::create('student_notes', function (Blueprint $table) {
             $table->id();
             $table->string('title', 128);
-            $table->foreignIdFor(\App\Models\Student::class)->constrained();
-            $table->foreignIdFor(\App\Models\Teacher::class)->constrained();
+            $table->foreignIdFor(\App\Models\Student::class);
+            $table->foreignIdFor(\App\Models\Teacher::class);
             $table->string('content', 2048);
             $table->boolean('read');
             $table->timestamps();

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Teacher extends Model
 {
-    protected $primaryKey = 'user_id';
 
     protected $fillable = [
         'user_id'
