@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Notes;
 
 use App\Enums\Role;
 use App\Models\StudentNote;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout('layouts.app')]
 class NotesOverview extends Component
 {
     use WithPagination;
 
     #[Locked]
-    public Model $user;
+    public User $user;
 
     public function mount(): void
     {
@@ -24,17 +26,16 @@ class NotesOverview extends Component
 
     public function render()
     {
-        return view('livewire.notes-overview', [
-            'notes' => $this->getNotesBuilder()->paginate(),
+        return view('livewire.pages.notes.overview', [
+            'notes' => $this->getNotesBuilder()->with(['teacher', 'student'])->paginate(5),
         ]);
     }
 
-    // TODO: Dit breekt Livewire op een of andere manier...
     public function toggleRead(int $id): void
     {
         abort_if($this->user->role !== Role::Student, 401);
 
-        ($note = $this->getNotesBuilder()->findOrFail($id, ['read']))
+        ($note = $this->getNotesBuilder()->findOrFail($id, ['id', 'read']))
             ->setAttribute('read', !$note->read)
             ->saveOrFail();
     }
